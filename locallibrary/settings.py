@@ -20,10 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2+acjw1(!(%ko!$9**jitfa(2op6a7ojsv+h1c=bmcm1axk5_4'
+# SECRET_KEY = 'django-insecure-2+acjw1(!(%ko!$9**jitfa(2op6a7ojsv+h1c=bmcm1axk5_4'
+# import os
+# SECRET_KEY = os.environ.get('DJANGO_SCRET_KEY','django-insecure-2+acjw1(!(%ko!$9**jitfa(2op6a7ojsv+h1c=bmcm1axk5_4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = os.environ.get('DJANGO_DEBUG','') != 'False'
 
 ALLOWED_HOSTS = []
 
@@ -31,9 +34,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin', #Core authentication framework and its default models
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.contenttypes', # Django content type system (allows permissions to be associated with models)
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -42,21 +45,21 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', #Manages sessions accross requests
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', #Associates users with requests using sessions
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'djangoadmin.urls'
+ROOT_URLCONF = 'locallibrary.urls'
 
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [os.path.join(BASE_DIR,'templates')], # [os.path.join(BASE_DIR,'templates'] [BASE_DIR / 'templates']=> make templates dir visible to template loader
         'APP_DIRS': True, # allow searching for templates in a subdirectory of each app in the project, name 'templates'
         'OPTIONS': {
             'context_processors': [
@@ -120,6 +123,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)
